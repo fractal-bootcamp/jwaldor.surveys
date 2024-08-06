@@ -16,10 +16,26 @@ app.use((req, res, next) => {
   next();
 });
 
-app.get("/", async (req, res) => {
-  const surveys = await client.survey.findMany();
+app.post("/initialize-survey", async (req, res) => {
+  const survey = await client.survey.create({data: {title:req.body.title}})
 
-  res.json({ surveys });
+  res.json({ survey });
+});
+
+app.post("/add-block", async (req, res) => {
+  const theblock = await client.block.create({data: {ordering:req.body.ordering,surveyId:req.body.survey_id}})
+
+  res.json({ theblock });
+});
+
+
+
+
+app.get("/", async (req, res) => {
+  // const surveys = await client.survey.findMany();
+  console.log("test")
+  res.json()
+  // res.json({ surveys });
 });
 
 app.listen(4000, () => {

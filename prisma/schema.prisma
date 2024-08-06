@@ -22,16 +22,35 @@ model Survey {
   title String
 
   // Relationships
-  questions Question[]
+  Blocks Block[]
 }
 
 model Question {
-  id   String @id @default(cuid())
-  text String
-
-  // relational ids
-  surveyId String
+  id       String @id @default(cuid())
+  text     String
+  ordering Int
+  blockId  String
 
   // Relationships
-  survey Survey @relation(fields: [surveyId], references: [id])
+  block Block @relation(fields: [blockId], references: [id])
+
+  Responses Responses[]
+}
+
+model Responses {
+  id          String @id @default(cuid())
+  text        String
+  question_id String
+
+  question Question @relation(fields: [question_id], references: [id])
+}
+
+model Block {
+  id       String @id @default(cuid())
+  ordering Int
+  // relational ids
+  surveyId String
+  survey   Survey @relation(fields: [surveyId], references: [id])
+
+  Question Question[]
 }
